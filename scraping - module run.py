@@ -124,22 +124,22 @@ def hemispheres(browser):
 
     #Loop throug the links, click the link and find the sample anchor and return href
     for index in range(len(links)):
+        hemisphere = {}
     
         # Find the elements on each loop to avoid a state element exception
         browser.find_by_css('a.product-item h3')[index].click()
-        hemisphere_data = scrape_hemisphere(browser.html)
-
+        
         # Find the sample images, anchor the tag and extract href
         # sample_element = browser.find_link_by_text("Sample").first
         
-        # sample_element = browser.links.find_by_text("Sample").first
-        # hemisphere["img_url"] = sample_element["href"]
+        sample_element = browser.links.find_by_text("Sample").first
+        hemisphere["img_url"] = sample_element["href"]
         
-        # Get Hemesphere title
-        # hemisphere["title"] = browser.find_by_css("h2.title").text
+        #Get Hemesphere title
+        hemisphere["title"] = browser.find_by_css("h2.title").text
         
         #Store the image urls to dictionary
-        hemisphere_image_urls.append(hemisphere_data)
+        hemisphere_image_urls.append(hemisphere)
         
         # Navigate backward
         browser.back()
@@ -151,7 +151,7 @@ def scrape_hemisphere(html_text):
     hemi_soup = BeautifulSoup(html_text, "html.parser")
 
     try:
-        title_element = hemi_soup.find("h2", class_="title").get_text()
+        title_element = hemi_soup.find("h2", class="title").get_text()
         sample_element = hemi_soup.find("a", text="Sample").get("href")
     except AttributeError:
         title_element = None
